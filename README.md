@@ -1,5 +1,6 @@
 # CollisionCheckNavisworks
 Данный скрипт позволяет создать список проверок и поисковых наборов для множества моделей в Navisworks.
+![Navisworks-Clashdetective_22](https://github.com/user-attachments/assets/2983205e-1319-42e1-b4b1-025a731d7fd1)
 
 ## v.1
 Краткий алгоритм действий:
