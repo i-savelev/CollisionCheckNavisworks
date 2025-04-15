@@ -64,7 +64,7 @@ class Interface():
         self.file_list_box = tk.Listbox(self.root, height=5, width=100)
         self.file_list_box.grid(row=5, column=1, padx=(10, 0), pady=10)
 
-        self.habr_link  = Label(self.root, text="Инстркуция", fg="blue", cursor="hand2")
+        self.habr_link  = Label(self.root, text="Инструкция", fg="blue", cursor="hand2")
         self.habr_link.grid(row=6, column=0)
         self.github_link  = Label(self.root, text="Github", fg="blue", cursor="hand2")
         self.github_link.grid(row=6, column=1)
