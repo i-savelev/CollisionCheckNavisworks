@@ -5,21 +5,23 @@ def step_1(path_excel_file):
 
     book = openpyxl.open(path_excel_file)
 
-    s1 = book['Модели']  
-    s2 = book['Матрица']  
-    
+    models_wks = book['Модели']  
+    matrix_wks = book['Матрица']
+
+    models = list(models_wks.values)
+    matrix = list(matrix_wks.values) 
+
+    selectionsets_list = []
+    for mod in models:
+        for mat in matrix:
+            if mod[0] and mod[1] and mat[0] and mat[1] and \
+                mat[0].strip() != '' and mat[1].strip() != '' and \
+                mod[1] == mat[0]:
+                    selectionsets_list.append([mod[1], mod[0] + '-' + mat[1], mod[0], mat[1]])
+
     if 'Модели_Элементы' in book.sheetnames:
         del book['Модели_Элементы']
     s3 = book.create_sheet('Модели_Элементы')
-
-    models = list(s1.values)  
-    matrix_0 = list(s2.values) 
-
-    selectionsets_list = []
-    for i in models:
-        for j in matrix_0:
-            if i[1] == j[0]:
-                selectionsets_list.append([i[1], i[0] + '-' + j[1], i[0], j[1]])
 
     for i in range(len(selectionsets_list)):
         s3.cell(row=i + 1, column=1, value=selectionsets_list[i][0])
@@ -27,7 +29,11 @@ def step_1(path_excel_file):
         s3.cell(row=i + 1, column=3, value=selectionsets_list[i][2])
         s3.cell(row=i + 1, column=4, value=selectionsets_list[i][3])
 
-    book.save(path_excel_file)
+    try:
+        book.save(path_excel_file)
+    except PermissionError:
+        raise PermissionError("Файл: " + path_excel_file + 
+            " занят другим процессом. Закройте файл и повторите попытку")
 
 def step_2(path_excel_file, folder_xml_file):
 
@@ -124,4 +130,8 @@ def step_2(path_excel_file, folder_xml_file):
     xml_doc_selectionsets = open(f'{folder_xml_file}/Поисковые наборы.xml', 'w', encoding='utf-8')
     xml_doc_selectionsets.write(xml_selectionsets)
 
-    book.save(path_excel_file)
+    try:
+        book.save(path_excel_file)
+    except PermissionError:
+        raise PermissionError("Файл: " + path_excel_file + 
+            " занят другим процессом. Закройте файл и повторите попытку")

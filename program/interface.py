@@ -28,6 +28,9 @@ class Interface():
     def open_link_github(self, event=None):
         webbrowser.open("https://github.com/i-savelev/CollisionCheckNavisworks")
 
+    def open_link_github_current(self, event=None):
+        webbrowser.open("https://github.com/barmaksis/CollisionCheckNavisworks.git")
+
     def set_button_function1(self):
         self.func1(self.file_path, self.file_list_box)
 
@@ -46,8 +49,8 @@ class Interface():
         self.file_label.grid(row=1, column=1, padx=(10, 10))
 
         # Кнопка выбора папки
-        self.folder_path = tk.Button(self.root, text="Выбрать папку для сохранение xml", command=self.select_folder)
-        self.folder_path.grid(row=2, column=0, padx=(10, 0), pady=10)
+        self.folder_path_button = tk.Button(self.root, text="Выбрать папку для сохранение xml", command=self.select_folder)
+        self.folder_path_button.grid(row=2, column=0, padx=(10, 0), pady=10)
         # Текст для передачи пути к файлу
         self.folder_label = tk.Label(self.root, text="", width=80)
         self.folder_label.grid(row=2, column=1, padx=(10, 10))
@@ -61,15 +64,26 @@ class Interface():
         self.function2_button.grid(row=4, column=0, padx=(10, 0), pady=10)
 
         # Текстовое поле
-        self.file_list_box = tk.Listbox(self.root, height=5, width=100)
-        self.file_list_box.grid(row=5, column=1, padx=(10, 0), pady=10)
+        file_list_frame = tk.Frame(self.root)
+        file_list_frame.grid(row=5, column=1, padx=(10, 0), pady=10)
+
+        self.file_list_box = tk.Listbox(file_list_frame, height=5, width=100)
+        scrollbar = tk.Scrollbar(file_list_frame,
+            orient="horizontal", command=self.file_list_box.xview)
+        
+        self.file_list_box.config(xscrollcommand=scrollbar.set)
+        self.file_list_box.grid(row=1, column=1, padx=(10, 0), pady=10, sticky="nsew")
+        scrollbar.grid(row=2, column=1, padx=(10, 0), sticky="ew")
 
         self.habr_link  = Label(self.root, text="Инструкция", fg="blue", cursor="hand2")
-        self.habr_link.grid(row=6, column=0)
-        self.github_link  = Label(self.root, text="Github", fg="blue", cursor="hand2")
+        self.habr_link.grid(row=6, column=0, rowspan=2, sticky="nsew")
+        self.github_link  = Label(self.root, text="Original Github repo", fg="blue", cursor="hand2")
         self.github_link.grid(row=6, column=1)
+        self.github_link_current = Label(self.root, text="Current Github fork", fg="blue", cursor="hand2")
+        self.github_link_current.grid(row=7, column=1)
 
         self.habr_link.bind("<Button-1>", self.open_link_habr)
         self.github_link.bind("<Button-1>", self.open_link_github)
+        self.github_link_current.bind("<Button-1>", self.open_link_github_current)
 
         self.root.mainloop()
